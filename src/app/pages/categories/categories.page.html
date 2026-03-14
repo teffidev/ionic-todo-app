@@ -1,0 +1,68 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <!-- Botón de volver (Ionic lo genera automático con routerLink) -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Tareas" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Categorías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Estado vacío -->
+  <div class="empty-state" *ngIf="categories.length === 0">
+    <ion-icon name="pricetags-outline"></ion-icon>
+    <h2>Sin categorías</h2>
+    <p>Crea categorías para organizar tus tareas</p>
+    <ion-button (click)="openAddCategory()" shape="round">
+      Crear primera categoría
+    </ion-button>
+  </div>
+
+  <!-- Lista de categorías -->
+  <ion-list *ngIf="categories.length > 0">
+    <ion-item-sliding
+      *ngFor="let cat of categories; trackBy: trackByCategoryId"
+      #slidingCat>
+
+      <ion-item class="category-item" detail="false">
+        <!-- Círculo de color de la categoría -->
+        <div
+          slot="start"
+          class="color-dot"
+          [style.background]="cat.color"
+          (click)="pickColor(cat)">
+        </div>
+
+        <ion-label>
+          <h2>{{ cat.name }}</h2>
+        </ion-label>
+
+        <!-- Botones de acción -->
+        <ion-buttons slot="end">
+          <ion-button fill="clear" color="primary" (click)="editCategory(cat)">
+            <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="deleteCategory(cat)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+    </ion-item-sliding>
+  </ion-list>
+
+  <!-- Sección de colores disponibles -->
+  <div class="color-guide" *ngIf="categories.length > 0">
+    <p class="guide-label">Toca el círculo para cambiar el color de una categoría</p>
+  </div>
+
+</ion-content>
+
+<!-- FAB para agregar categoría -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="primary" (click)="openAddCategory()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

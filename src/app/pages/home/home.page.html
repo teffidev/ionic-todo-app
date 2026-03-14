@@ -1,0 +1,116 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title>
+      <span class="header-title">📋 Mis Tareas</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <!-- Botón para ir a gestionar categorías -->
+      <ion-button routerLink="/categories" fill="clear" color="light">
+        <ion-icon name="pricetags-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- BARRA DE FILTROS por categoría -->
+  <!-- *ngIf es el equivalente de los ternarios en JSX -->
+  <!-- Este bloque solo aparece si el feature flag de Firebase está activo -->
+  <ion-toolbar color="primary" *ngIf="showCategoryFilter && categories.length > 0">
+    <div class="category-filter-bar">
+      <!-- "Todas" siempre aparece como primera opción -->
+      <ion-chip
+        [class.selected]="selectedCategoryId === null"
+        (click)="selectCategory(null)"
+        color="light">
+        Todas ({{ tasks.length }})
+      </ion-chip>
+
+      <!-- ngFor = el map() de Angular. trackBy optimiza el renderizado. -->
+      <ion-chip
+        *ngFor="let cat of categories; trackBy: trackByTaskId"
+        [class.selected]="selectedCategoryId === cat.id"
+        (click)="selectCategory(cat.id)"
+        [style.--color]="cat.color"
+        class="category-chip">
+        <span class="chip-dot" [style.background]="cat.color"></span>
+        {{ cat.name }}
+      </ion-chip>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-bottom">
+
+  <!-- ESTADO VACÍO: cuando no hay tareas -->
+  <div class="empty-state" *ngIf="filteredTasks.length === 0">
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <h2>{{ selectedCategoryId ? 'No hay tareas aquí' : '¡Todo listo!' }}</h2>
+    <p>{{ selectedCategoryId ? 'No tienes tareas en esta categoría' : 'Toca + para agregar tu primera tarea' }}</p>
+  </div>
+
+  <!-- STATS: contador de pendientes -->
+  <div class="stats-bar" *ngIf="tasks.length > 0">
+    <span class="pending-count">
+      <strong>{{ pendingCount }}</strong> pendiente{{ pendingCount !== 1 ? 's' : '' }}
+    </span>
+    <span class="total-count">{{ tasks.length }} total</span>
+  </div>
+
+  <!-- LISTA DE TAREAS -->
+  <!-- ion-list con "lines" define el estilo de separadores -->
+  <ion-list class="tasks-list">
+
+    <!-- ion-item-sliding habilita el swipe para revelar acciones -->
+    <ion-item-sliding
+      *ngFor="let task of filteredTasks; trackBy: trackByTaskId"
+      #slidingItem>
+
+      <!-- ITEM PRINCIPAL -->
+      <ion-item
+        [class.completed]="task.completed"
+        class="task-item"
+        detail="false">
+
+        <!-- Checkbox para marcar como completada -->
+        <ion-checkbox
+          slot="start"
+          [checked]="task.completed"
+          (ionChange)="toggleTask(task)"
+          [style.--checkbox-background-checked]="getCategoryForTask(task)?.color || '#6366f1'">
+        </ion-checkbox>
+
+        <!-- Contenido del item -->
+        <ion-label class="task-content">
+          <h3 [class.strikethrough]="task.completed">{{ task.title }}</h3>
+          <!-- Badge de categoría (solo si tiene) -->
+          <p *ngIf="getCategoryForTask(task) as cat">
+            <span class="category-badge" [style.background]="cat.color + '20'" [style.color]="cat.color">
+              ● {{ cat.name }}
+            </span>
+          </p>
+        </ion-label>
+
+        <!-- Botón de editar inline -->
+        <ion-button slot="end" fill="clear" color="medium" (click)="editTask(task, slidingItem)">
+          <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- OPCIONES AL DESLIZAR (swipe left) -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteTask(task, slidingItem)" expandable>
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>
+
+<!-- BOTÓN FLOTANTE para agregar tarea -->
+<!-- ion-fab es el FAB (Floating Action Button) -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="primary" (click)="openAddTaskAlert()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
