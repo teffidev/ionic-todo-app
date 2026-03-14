@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  
   firebaseConfig: {
     apiKey: "AIzaSyCFwzz_MuIuAbxIJgZCKi0U3WfAmqmL3UU",
     authDomain: "ionic-todo-app-1ac5d.firebaseapp.com",

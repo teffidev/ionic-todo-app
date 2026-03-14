@@ -1,68 +1,63 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar color="primary">
-    <!-- Botón de volver (Ionic lo genera automático con routerLink) -->
+<ion-header class="ion-no-border app-header">
+  <ion-toolbar>
+    <!-- ✅ FIX: (click) con goBack() en lugar de ion-back-button -->
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text="Tareas" color="light"></ion-back-button>
+      <button class="back-btn" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        <span>Tareas</span>
+      </button>
     </ion-buttons>
-    <ion-title>Categorías</ion-title>
+    <ion-title class="cat-page-title">Categorías</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-
-  <!-- Estado vacío -->
+<ion-content>
+  <!-- ESTADO VACÍO -->
   <div class="empty-state" *ngIf="categories.length === 0">
-    <ion-icon name="pricetags-outline"></ion-icon>
+    <div class="empty-icon-wrap">
+      <ion-icon name="folder-open-outline"></ion-icon>
+    </div>
     <h2>Sin categorías</h2>
-    <p>Crea categorías para organizar tus tareas</p>
-    <ion-button (click)="openAddCategory()" shape="round">
-      Crear primera categoría
-    </ion-button>
+    <p>Organiza tus tareas creando tu primera categoría</p>
+    <button class="create-btn" (click)="openAddCategory()">
+      <ion-icon name="add"></ion-icon>
+      Crear categoría
+    </button>
   </div>
 
-  <!-- Lista de categorías -->
-  <ion-list *ngIf="categories.length > 0">
-    <ion-item-sliding
+  <!-- GRID DE CATEGORÍAS -->
+  <div class="cat-grid" *ngIf="categories.length > 0">
+    <div
       *ngFor="let cat of categories; trackBy: trackByCategoryId"
-      #slidingCat>
+      class="cat-card"
+      [style.--cat-color]="cat.color"
+    >
+      <div class="cat-color-dot" (click)="pickColor(cat)">
+        <span class="color-circle" [style.background]="cat.color"></span>
+        <ion-icon name="color-palette-outline" class="palette-icon"></ion-icon>
+      </div>
 
-      <ion-item class="category-item" detail="false">
-        <!-- Círculo de color de la categoría -->
-        <div
-          slot="start"
-          class="color-dot"
-          [style.background]="cat.color"
-          (click)="pickColor(cat)">
-        </div>
+      <p class="cat-name">{{ cat.name }}</p>
 
-        <ion-label>
-          <h2>{{ cat.name }}</h2>
-        </ion-label>
-
-        <!-- Botones de acción -->
-        <ion-buttons slot="end">
-          <ion-button fill="clear" color="primary" (click)="editCategory(cat)">
-            <ion-icon name="create-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" color="danger" (click)="deleteCategory(cat)">
-            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
-
-    </ion-item-sliding>
-  </ion-list>
-
-  <!-- Sección de colores disponibles -->
-  <div class="color-guide" *ngIf="categories.length > 0">
-    <p class="guide-label">Toca el círculo para cambiar el color de una categoría</p>
+      <div class="cat-actions">
+        <button class="action-btn edit" (click)="editCategory(cat)">
+          <ion-icon name="pencil-outline"></ion-icon>
+        </button>
+        <button class="action-btn delete" (click)="deleteCategory(cat)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
   </div>
 
+  <div class="palette-hint-row" *ngIf="categories.length > 0">
+    <ion-icon name="color-palette-outline"></ion-icon>
+    <span>Toca el círculo de color para cambiarlo</span>
+  </div>
 </ion-content>
 
-<!-- FAB para agregar categoría -->
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button color="primary" (click)="openAddCategory()">
+  <ion-fab-button (click)="openAddCategory()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

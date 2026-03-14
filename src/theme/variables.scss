@@ -1,2 +1,287 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+/* ════════════════════════════════════════════
+   DESIGN SYSTEM — Dark Luxury Todo App
+   ════════════════════════════════════════════ */
+
+:root {
+  /* Color primario */
+  --ion-color-primary: #6366f1;
+  --ion-color-primary-rgb: 99, 102, 241;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #4f52c5;
+  --ion-color-primary-tint: #7e81f4;
+
+  --ion-color-danger: #f43f5e;
+  --ion-color-danger-rgb: 244, 63, 94;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-shade: #d93655;
+
+  --ion-color-success: #22c55e;
+  --ion-color-warning: #f59e0b;
+
+  --ion-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ── Tokens propios del app ── */
+  --app-bg: #070b18;
+  --app-surface: #0d1322;
+  --app-card: #111827;
+  --app-border: rgba(255, 255, 255, 0.08);
+  --app-text: #e2e8f0;
+  --app-text-muted: #64748b;
+  --app-text-faint: #2d3748;
+  --app-accent: #06b6d4;
+  --app-glow: rgba(99, 102, 241, 0.35);
+
+  /* Ionic overrides */
+  --ion-background-color: var(--app-bg);
+  --ion-background-color-rgb: 7, 11, 24;
+  --ion-text-color: var(--app-text);
+  --ion-text-color-rgb: 226, 232, 240;
+  --ion-item-background: transparent;
+  --ion-border-color: var(--app-border);
+  --ion-color-medium: var(--app-text-muted);
+  --ion-color-medium-rgb: 100, 116, 139;
+  --ion-toolbar-background: var(--app-bg);
+  --ion-toolbar-color: var(--app-text);
+}
+
+/* ── MODO CLARO ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --app-bg: #f0f4ff;
+    --app-surface: #e4eaff;
+    --app-card: #ffffff;
+    --app-border: rgba(0, 0, 0, 0.08);
+    --app-text: #0f172a;
+    --app-text-muted: #64748b;
+    --app-text-faint: #cbd5e1;
+    --app-glow: rgba(99, 102, 241, 0.15);
+
+    --ion-background-color: var(--app-bg);
+    --ion-background-color-rgb: 240, 244, 255;
+    --ion-text-color: var(--app-text);
+    --ion-text-color-rgb: 15, 23, 42;
+    --ion-toolbar-background: var(--app-bg);
+    --ion-toolbar-color: var(--app-text);
+    --ion-item-background: transparent;
+    --ion-border-color: var(--app-border);
+  }
+}
+
+/* ════════════════════════════════════════════
+   ALERT — Fix fondo blanco en modo oscuro
+   
+   El problema: Ionic renderiza el Alert dentro de
+   un Shadow DOM que ignora las CSS variables del :root.
+   Solución: apuntar directamente al host del alert
+   con el selector de la clase CSS que le pasamos.
+   ════════════════════════════════════════════ */
+
+/* Backdrop oscuro */
+ion-alert.custom-alert {
+  --backdrop-opacity: 0.75;
+}
+
+/* Contenedor principal del alert */
+.custom-alert .alert-wrapper {
+  background: #111827 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+  min-width: 300px !important;
+  max-width: 340px !important;
+}
+
+/* Header del alert */
+.custom-alert .alert-head {
+  background: #111827 !important;
+  padding: 20px 20px 8px !important;
+}
+
+.custom-alert .alert-title {
+  font-family: "Outfit", sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Mensaje del alert */
+.custom-alert .alert-message {
+  background: #111827 !important;
+  color: #64748b !important;
+  font-family: "Outfit", sans-serif !important;
+  font-size: 14px !important;
+  padding: 0 20px 8px !important;
+  line-height: 1.5 !important;
+}
+
+/* Input de texto */
+.custom-alert .alert-input-group {
+  background: #111827 !important;
+  padding: 4px 16px 12px !important;
+}
+
+.custom-alert .alert-input {
+  background: #0d1322 !important;
+  color: #e2e8f0 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 12px 14px !important;
+  font-family: "Outfit", sans-serif !important;
+  font-size: 15px !important;
+
+  &:focus {
+    border-color: #6366f1 !important;
+  }
+
+  &::placeholder {
+    color: #475569 !important;
+  }
+}
+
+/* Lista de opciones radio */
+.custom-alert .alert-radio-group {
+  background: #111827 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  max-height: 220px !important;
+}
+
+.custom-alert .alert-radio-button {
+  --background: #111827 !important;
+  --background-focused: #172035 !important;
+  --background-hover: #172035 !important;
+
+  &::part(native) {
+    background: #111827 !important;
+    color: #e2e8f0 !important;
+  }
+}
+
+.custom-alert .alert-radio-label {
+  color: #e2e8f0 !important;
+  font-family: "Outfit", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+/* ─── Botones del alert ─── */
+.custom-alert .alert-button-group {
+  background: #111827 !important;
+  padding: 8px 14px 14px !important;
+  gap: 8px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Todos los botones base */
+.custom-alert .alert-button {
+  font-family: "Outfit", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+  flex: 1 !important;
+  /* Resets críticos para neutralizar estilos base de Ionic */
+  text-align: center !important;
+  justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  min-height: 44px !important;
+  letter-spacing: 0.1px !important;
+  float: none !important;
+  width: auto !important;
+}
+
+/* Ionic envuelve el texto del botón en un <span class="alert-button-inner"> */
+/* Con display flex en el botón, ese span se centra automáticamente */
+.custom-alert .alert-button .alert-button-inner {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+/* Botón cancelar */
+.custom-alert .alert-btn-cancel,
+.custom-alert [aria-label="Cancelar"],
+.custom-alert [aria-label="Atrás"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #94a3b8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Botón confirmar */
+.custom-alert .alert-btn-confirm {
+  background: #6366f1 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Botón peligro (eliminar) */
+.custom-alert .alert-btn-danger {
+  background: #f43f5e !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.4) !important;
+}
+
+/* ── Modo claro: ajusta el fondo del alert ── */
+@media (prefers-color-scheme: light) {
+  .custom-alert .alert-wrapper,
+  .custom-alert .alert-head,
+  .custom-alert .alert-message,
+  .custom-alert .alert-input-group,
+  .custom-alert .alert-radio-group,
+  .custom-alert .alert-button-group {
+    background: #ffffff !important;
+  }
+
+  .custom-alert .alert-title {
+    color: #0f172a !important;
+  }
+  .custom-alert .alert-message {
+    color: #64748b !important;
+  }
+  .custom-alert .alert-radio-label {
+    color: #0f172a !important;
+  }
+  .custom-alert .alert-input {
+    background: #f0f4ff !important;
+    color: #0f172a !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    &::placeholder {
+      color: #94a3b8 !important;
+    }
+  }
+  .custom-alert .alert-btn-cancel {
+    background: #f0f4ff !important;
+    color: #64748b !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+  .custom-alert .alert-radio-button::part(native) {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+}
+
+/* ════════════════════════════════════════════
+   TOAST
+   ════════════════════════════════════════════ */
+.app-toast {
+  --background: #1e293b;
+  --color: #e2e8f0;
+  --border-radius: 14px;
+  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-family: "Outfit", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+@media (prefers-color-scheme: light) {
+  .app-toast {
+    --background: #0f172a;
+    --color: #f1f5f9;
+  }
+}

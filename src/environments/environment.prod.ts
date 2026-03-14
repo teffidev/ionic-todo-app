@@ -1,3 +1,13 @@
 export const environment = {
-  production: true
+  production: true,
+
+  firebaseConfig: {
+    apiKey: 'AIzaSyCFwzz_MuIuAbxIJgZCKi0U3WfAmqmL3UU',
+    authDomain: 'ionic-todo-app-1ac5d.firebaseapp.com',
+    projectId: 'ionic-todo-app-1ac5d',
+    storageBucket: 'ionic-todo-app-1ac5d.firebasestorage.app',
+    messagingSenderId: '163530233116',
+    appId: '1:163530233116:web:4f687128dbc33c179496d9',
+    measurementId: 'G-SRRF2FFGJM',
+  },
 };

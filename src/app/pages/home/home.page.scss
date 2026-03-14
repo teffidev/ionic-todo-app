@@ -1,119 +1,407 @@
-.category-filter-bar {
+/* ── HEADER ── */
+.app-header ion-toolbar {
+  --padding-start: 16px;
+  --padding-end: 8px;
+}
+
+.header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline-start: 0;
+}
+
+.header-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--app-text);
+  letter-spacing: -0.4px;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  background: var(--ion-color-primary);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+  box-shadow: 0 0 12px var(--app-glow);
+}
+
+.icon-btn {
+  --color: var(--app-text-muted);
+  --background: transparent;
+  --background-hover: var(--app-card);
+  --border-radius: 12px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  width: 42px;
+  height: 42px;
+  font-size: 20px;
+  transition: color 0.2s;
+
+  &:hover {
+    --color: var(--app-text);
+  }
+}
+
+/* ── FILTROS ── */
+.filter-bar {
   display: flex;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 8px 16px 12px;
   overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch; // Scroll suave en iOS
-
-  // Ocultar scrollbar pero mantener funcionalidad
-  &::-webkit-scrollbar { display: none; }
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
-  ion-chip {
-    --background: rgba(255, 255, 255, 0.15);
-    --color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: 13px;
-    cursor: pointer;
-    flex-shrink: 0; // No comprimir los chips al hacer scroll
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text-muted);
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
 
-    &.selected {
-      --background: white;
-      --color: var(--ion-color-primary);
-      font-weight: 600;
-    }
+  &.active {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    color: white;
+    box-shadow: 0 4px 12px var(--app-glow);
+    font-weight: 600;
+  }
+
+  &:active {
+    transform: scale(0.96);
   }
 }
 
 .chip-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  display: inline-block;
-  margin-right: 4px;
+  flex-shrink: 0;
 }
 
-// Stats bar
-.stats-bar {
+/* ── STATS HERO ── */
+.stats-hero {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 16px 4px;
-  font-size: 13px;
-
-  .pending-count { color: var(--ion-color-dark); }
-  .total-count   { color: var(--ion-color-medium); }
-}
-
-// Lista de tareas
-.tasks-list {
-  background: transparent;
-  padding: 0 8px;
-}
-
-.task-item {
-  --background: white;
-  --border-radius: 12px;
-  --inner-padding-end: 8px;
-  margin-bottom: 8px;
-  border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  transition: opacity 0.2s ease;
-
-  &.completed {
-    opacity: 0.55;
-  }
-}
-
-.task-content {
-  h3 {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--ion-color-dark);
-    margin-bottom: 4px;
-
-    &.strikethrough {
-      text-decoration: line-through;
-      color: var(--ion-color-medium);
-    }
-  }
-}
-
-.category-badge {
-  display: inline-block;
-  padding: 2px 8px;
+  justify-content: center;
+  margin: 16px 16px 20px;
+  padding: 16px;
+  background: var(--app-card);
   border-radius: 20px;
+  border: 1px solid var(--app-border);
+  gap: 0;
+}
+
+.stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.stat-number {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--app-text);
+  line-height: 1;
+  letter-spacing: -0.5px;
+
+  &.accent {
+    color: var(--app-accent);
+  }
+}
+
+.stat-label {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.2px;
+  color: var(--app-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-// Estado vacío
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--app-border);
+  margin: 0 8px;
+}
+
+/* ── ESTADO VACÍO ── */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 32px;
+  padding: 64px 32px 32px;
   text-align: center;
+}
+
+.empty-icon-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  background: var(--app-card);
+  border: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0 0 40px var(--app-glow);
 
   ion-icon {
-    font-size: 72px;
-    color: var(--ion-color-medium);
-    margin-bottom: 16px;
+    font-size: 48px;
+    color: var(--ion-color-primary);
   }
+}
 
-  h2 {
+.empty-state h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--app-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--app-text-muted);
+  line-height: 1.6;
+  max-width: 240px;
+}
+
+/* ── LISTA DE TAREAS ── */
+.tasks-container {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-slide {
+  border-radius: 16px;
+  overflow: hidden;
+  /* Animación de entrada escalonada */
+  animation: taskSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes taskSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.task-card {
+  --background: var(--app-card);
+  --inner-padding-start: 0;
+  --inner-padding-end: 4px;
+  --padding-start: 0;
+  --min-height: 68px;
+  border-radius: 16px;
+  border: 1px solid var(--app-border);
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  &.is-done {
+    --background: var(--app-surface);
+    opacity: 0.6;
+
+    .task-accent-bar {
+      opacity: 0.3;
+    }
+  }
+}
+
+/* Barra de color izquierda por categoría */
+.task-accent-bar {
+  width: 4px;
+  height: 100%;
+  min-height: 68px;
+  flex-shrink: 0;
+  border-radius: 0;
+  transition: opacity 0.2s;
+}
+
+/* Checkbox de la tarea */
+.task-check {
+  margin-inline-start: 12px;
+  margin-inline-end: 4px;
+  --size: 22px;
+  --border-radius: 7px;
+  --border-width: 1.5px;
+  --border-color: var(--app-text-faint);
+  flex-shrink: 0;
+}
+
+/* Cuerpo de la tarea */
+.task-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 8px 14px 4px;
+  white-space: normal;
+  overflow: visible;
+}
+
+.task-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--app-text);
+  line-height: 1.35;
+  margin: 0;
+  transition: all 0.2s ease;
+
+  &.done-text {
+    text-decoration: line-through;
+    color: var(--app-text-muted);
+  }
+}
+
+/* Tag de categoría */
+.cat-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tag-color, var(--ion-color-primary));
+  background: color-mix(
+    in srgb,
+    var(--tag-color, var(--ion-color-primary)) 12%,
+    transparent
+  );
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--tag-color, var(--ion-color-primary)) 30%,
+      transparent
+    );
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+  width: fit-content;
+}
+
+/* Botón editar */
+.edit-btn {
+  --color: var(--app-text-faint);
+  --background: transparent;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-size: 17px;
+  height: 38px;
+  width: 38px;
+  margin-inline-end: 6px;
+  border-radius: 10px;
+  transition: color 0.15s;
+
+  &:hover {
+    --color: var(--app-text-muted);
+  }
+}
+
+/* Opción de eliminar al hacer swipe */
+.delete-option {
+  --background: #f43f5e;
+  --color: white;
+  font-family: "Outfit", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  min-width: 76px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  ion-icon {
     font-size: 20px;
-    font-weight: 600;
-    color: var(--ion-color-dark);
-    margin-bottom: 8px;
+    margin-bottom: 2px;
+  }
+}
+
+/* ── BOTÓN DE NAVEGACIÓN A CATEGORÍAS ── */
+.nav-icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  color: var(--app-text-muted);
+  padding: 6px 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: "Outfit", sans-serif;
+
+  ion-icon {
+    font-size: 18px;
+    color: var(--ion-color-primary);
   }
 
-  p {
-    font-size: 14px;
-    color: var(--ion-color-medium);
-    line-height: 1.5;
+  &:active {
+    transform: scale(0.94);
+    background: var(--app-card);
+  }
+}
+
+.nav-icon-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--app-text-muted);
+  text-transform: uppercase;
+}
+
+/* ── BOTÓN EDITAR (usa <button> nativo, no ion-button) ── */
+.edit-btn {
+  background: transparent;
+  border: none;
+  color: var(--app-text-faint);
+  font-size: 17px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-inline-end: 6px;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  flex-shrink: 0;
+
+  &:active {
+    color: var(--app-text-muted);
+    background: var(--app-surface);
   }
 }

@@ -1,37 +1,112 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+@import "theme/variables";
 
-/* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+/* El primer toolbar del header recibe el padding del notch */
+ion-header ion-toolbar:first-child {
+  padding-top: env(safe-area-inset-top) !important;
+}
 
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+/* El contenido deja espacio abajo para el home indicator + FAB */
+ion-content {
+  --padding-top: 8px;
+  --padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  --background: var(--app-bg);
+}
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+/* El FAB sube sobre el home indicator */
+ion-fab[vertical="bottom"] {
+  bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+}
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* ════════════════════════════════════════════
+   HEADER / TOOLBAR
+   ════════════════════════════════════════════ */
+ion-header {
+  &::after {
+    display: none;
+  } /* Elimina la línea sombra de iOS */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+  ion-toolbar {
+    --background: var(--app-bg);
+    --color: var(--app-text);
+    --border-width: 0;
+    --min-height: 56px;
+  }
+}
+
+/* ════════════════════════════════════════════
+   FAB BUTTON — efecto glow
+   ════════════════════════════════════════════ */
+ion-fab-button {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-tint);
+  --color: white;
+  --border-radius: 18px;
+  --box-shadow: 0 0 0 0 var(--app-glow), 0 8px 24px rgba(99, 102, 241, 0.45);
+  width: 58px;
+  height: 58px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.94);
+    --box-shadow: 0 0 0 8px var(--app-glow), 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  ion-icon {
+    font-size: 26px;
+  }
+}
+
+/* ════════════════════════════════════════════
+   LISTAS Y ITEMS
+   ════════════════════════════════════════════ */
+ion-list {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+ion-item {
+  --background: transparent;
+  --background-hover: transparent;
+  --background-activated: transparent;
+  --border-color: transparent;
+  --inner-border-width: 0;
+  --highlight-height: 0;
+}
+
+ion-item-sliding {
+  background: transparent;
+}
+
+/* ════════════════════════════════════════════
+   CHECKBOXES
+   ════════════════════════════════════════════ */
+ion-checkbox {
+  --border-radius: 8px;
+  --border-width: 2px;
+  --border-color: var(--app-border);
+  --border-color-checked: var(--ion-color-primary);
+  --background-checked: var(--ion-color-primary);
+  --checkmark-color: white;
+  --size: 22px;
+}
+
+/* ════════════════════════════════════════════
+   BACK BUTTON
+   ════════════════════════════════════════════ */
+ion-back-button {
+  --color: var(--app-text);
+  --icon-font-size: 22px;
+}
+
+/* ════════════════════════════════════════════
+   SCROLL
+   ════════════════════════════════════════════ */
+ion-content::part(scroll) {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

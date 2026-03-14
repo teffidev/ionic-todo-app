@@ -5,10 +5,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
+
 import {
   AlertController,
   ToastController,
   IonItemSliding,
+  NavController,
 } from '@ionic/angular';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -42,6 +44,7 @@ export class HomePage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private cdr: ChangeDetectorRef,
+    private navCtrl: NavController,
   ) {}
 
   async ngOnInit() {
@@ -65,9 +68,24 @@ export class HomePage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // ionViewWillEnter se dispara cada vez que Ionic muestra esta página,
+  // incluso al volver desde categorías. Con OnPush, markForCheck() es
+  // necesario para que Angular re-evalúe el template en ese momento.
+  ionViewWillEnter() {
+    this.cdr.markForCheck();
+  }
+
+  // NavController.navigateForward activa las animaciones de Ionic.
+  // Router.navigate() solo cambia la URL sin disparar ion-router-outlet.
+  goToCategories() {
+    this.navCtrl.navigateForward('/categories');
+  }
+
+  // ── Filtrado ─────────────────────────────────────────────────
   selectCategory(categoryId: string | null) {
     this.selectedCategoryId = categoryId;
     this.applyFilter();
+    this.cdr.markForCheck();
   }
 
   private applyFilter() {
@@ -88,9 +106,10 @@ export class HomePage implements OnInit, OnDestroy {
     return this.tasks.filter((t) => !t.completed).length;
   }
 
+  // ── Agregar tarea ─────────────────────────────────────────────
   async openAddTaskAlert() {
     const alert = await this.alertCtrl.create({
-      header: '✅ Nueva Tarea',
+      header: 'Nueva Tarea',
       cssClass: 'custom-alert',
       inputs: [
         {
@@ -101,9 +120,10 @@ export class HomePage implements OnInit, OnDestroy {
         },
       ],
       buttons: [
-        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Cancelar', role: 'cancel', cssClass: 'alert-btn-cancel' },
         {
-          text: 'Siguiente →',
+          text: 'Siguiente',
+          cssClass: 'alert-btn-confirm',
           handler: async (data) => {
             if (!data.title?.trim()) {
               this.showToast('Escribe el nombre de la tarea', 'warning');
@@ -120,7 +140,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private async selectCategoryForNewTask(title: string) {
     const alert = await this.alertCtrl.create({
-      header: '🏷️ Categoría',
+      header: 'Elegir Categoría',
       cssClass: 'custom-alert',
       inputs: [
         { type: 'radio', label: 'Sin categoría', value: '', checked: true },
@@ -131,12 +151,13 @@ export class HomePage implements OnInit, OnDestroy {
         })),
       ],
       buttons: [
-        { text: 'Atrás', role: 'cancel' },
+        { text: 'Atrás', role: 'cancel', cssClass: 'alert-btn-cancel' },
         {
           text: 'Agregar',
+          cssClass: 'alert-btn-confirm',
           handler: (categoryId: string) => {
             this.taskService.addTask(title, categoryId || null);
-            this.showToast('Tarea agregada ✓');
+            this.showToast('Tarea agregada');
           },
         },
       ],
@@ -144,15 +165,18 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
+  // ── Editar tarea ──────────────────────────────────────────────
   async editTask(task: Task, slidingItem?: IonItemSliding) {
     await slidingItem?.close();
     const alert = await this.alertCtrl.create({
-      header: '✏️ Editar Tarea',
+      header: 'Editar Tarea',
+      cssClass: 'custom-alert',
       inputs: [{ name: 'title', type: 'text', value: task.title }],
       buttons: [
-        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Cancelar', role: 'cancel', cssClass: 'alert-btn-cancel' },
         {
           text: 'Guardar',
+          cssClass: 'alert-btn-confirm',
           handler: (data) => {
             if (data.title?.trim()) {
               this.taskService.updateTask(task.id, {
@@ -167,6 +191,7 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
+  // ── Toggle / Delete ───────────────────────────────────────────
   toggleTask(task: Task) {
     this.taskService.toggleComplete(task.id);
   }
@@ -183,6 +208,7 @@ export class HomePage implements OnInit, OnDestroy {
       duration: 1800,
       position: 'bottom',
       color,
+      cssClass: 'app-toast',
     });
     await toast.present();
   }
