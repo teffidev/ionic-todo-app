@@ -26,7 +26,7 @@
 
       <!-- ngFor = el map() de Angular. trackBy optimiza el renderizado. -->
       <ion-chip
-        *ngFor="let cat of categories; trackBy: trackByTaskId"
+        *ngFor="let cat of categories; trackBy: trackById"
         [class.selected]="selectedCategoryId === cat.id"
         (click)="selectCategory(cat.id)"
         [style.--color]="cat.color"
@@ -61,7 +61,7 @@
 
     <!-- ion-item-sliding habilita el swipe para revelar acciones -->
     <ion-item-sliding
-      *ngFor="let task of filteredTasks; trackBy: trackByTaskId"
+      *ngFor="let task of filteredTasks; trackBy: trackById"
       #slidingItem>
 
       <!-- ITEM PRINCIPAL -->

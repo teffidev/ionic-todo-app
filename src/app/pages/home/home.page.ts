@@ -21,9 +21,9 @@ import { Category } from '../../models/category.model';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush, // Optimización clave
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -31,12 +31,8 @@ export class HomePage implements OnInit, OnDestroy {
   filteredTasks: Task[] = [];
   categories: Category[] = [];
   selectedCategoryId: string | null = null;
-
-  // Feature flag desde Firebase Remote Config
   showCategoryFilter = true;
 
-  // Subject para limpiar suscripciones (evitar memory leaks)
-  // Equivale a cleanup en useEffect de React
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -45,37 +41,30 @@ export class HomePage implements OnInit, OnDestroy {
     private remoteConfigService: RemoteConfigService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private cdr: ChangeDetectorRef, // Necesario con OnPush para forzar re-render manual
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
-    // Inicializar Firebase Remote Config
     await this.remoteConfigService.initialize();
     this.showCategoryFilter = this.remoteConfigService.getBoolean(
       'show_category_filter',
     );
 
-    // combineLatest = observar dos fuentes a la vez.
-    // Equivale a useEffect con múltiples dependencias en React.
     combineLatest([this.taskService.tasks$, this.categoryService.categories$])
-      .pipe(
-        takeUntil(this.destroy$), // Auto-unsubscribe cuando el componente se destruye
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(([tasks, categories]) => {
         this.tasks = tasks;
         this.categories = categories;
         this.applyFilter();
-        this.cdr.markForCheck(); // Decirle a OnPush que re-renderice
+        this.cdr.markForCheck();
       });
   }
 
   ngOnDestroy() {
-    // Limpieza: equivalente al return de cleanup en useEffect
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  // ── FILTRADO ──────────────────────────────────
   selectCategory(categoryId: string | null) {
     this.selectedCategoryId = categoryId;
     this.applyFilter();
@@ -87,10 +76,8 @@ export class HomePage implements OnInit, OnDestroy {
       : [...this.tasks];
   }
 
-  // ── OPTIMIZACIÓN: trackBy ──────────────────────
-  // Equivale al "key" en React. Evita re-renderizar items que no cambiaron.
-  trackByTaskId(_index: number, task: Task): string {
-    return task.id;
+  trackById(_index: number, item: { id: string }): string {
+    return item.id;
   }
 
   getCategoryForTask(task: Task): Category | undefined {
@@ -101,7 +88,6 @@ export class HomePage implements OnInit, OnDestroy {
     return this.tasks.filter((t) => !t.completed).length;
   }
 
-  // ── AGREGAR TAREA ─────────────────────────────
   async openAddTaskAlert() {
     const alert = await this.alertCtrl.create({
       header: '✅ Nueva Tarea',
@@ -121,7 +107,7 @@ export class HomePage implements OnInit, OnDestroy {
           handler: async (data) => {
             if (!data.title?.trim()) {
               this.showToast('Escribe el nombre de la tarea', 'warning');
-              return false; // Evita cerrar el alert
+              return false;
             }
             await this.selectCategoryForNewTask(data.title.trim());
             return true;
@@ -158,7 +144,6 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  // ── EDITAR TAREA ──────────────────────────────
   async editTask(task: Task, slidingItem?: IonItemSliding) {
     await slidingItem?.close();
     const alert = await this.alertCtrl.create({
@@ -182,19 +167,16 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  // ── TOGGLE COMPLETAR ──────────────────────────
   toggleTask(task: Task) {
     this.taskService.toggleComplete(task.id);
   }
 
-  // ── ELIMINAR ──────────────────────────────────
   async deleteTask(task: Task, slidingItem?: IonItemSliding) {
     await slidingItem?.close();
     this.taskService.deleteTask(task.id);
     this.showToast('Tarea eliminada');
   }
 
-  // ── TOAST (notificación breve) ─────────────────
   private async showToast(message: string, color = 'dark') {
     const toast = await this.toastCtrl.create({
       message,
