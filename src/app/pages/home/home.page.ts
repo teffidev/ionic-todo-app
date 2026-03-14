@@ -24,6 +24,7 @@ import { Category } from '../../models/category.model';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush, // Optimización clave
+  standalone: false,
 })
 export class HomePage implements OnInit, OnDestroy {
   tasks: Task[] = [];

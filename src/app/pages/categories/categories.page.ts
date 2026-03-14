@@ -18,6 +18,7 @@ import { Category, CATEGORY_COLORS } from '../../models/category.model';
   templateUrl: 'categories.page.html',
   styleUrls: ['categories.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CategoriesPage implements OnInit, OnDestroy {
   categories: Category[] = [];
