@@ -9,7 +9,6 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    // Lazy loading: solo carga HomePageModule cuando el usuario va a /home
     loadChildren: () =>
       import('./pages/home/home.module').then((m) => m.HomePageModule),
   },

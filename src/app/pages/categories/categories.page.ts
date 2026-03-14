@@ -5,12 +5,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-
-import {
-  AlertController,
-  ToastController,
-  NavController,
-} from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -37,7 +32,6 @@ export class CategoriesPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private cdr: ChangeDetectorRef,
-    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {
@@ -54,14 +48,8 @@ export class CategoriesPage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // Fuerza re-render cada vez que Ionic navega a esta página
   ionViewWillEnter() {
     this.cdr.markForCheck();
-  }
-
-  goBack() {
-    // navigateBack activa la animación de retroceso (slide derecha→izquierda)
-    this.navCtrl.navigateBack('/home');
   }
 
   trackByCategoryId(_i: number, cat: Category): string {
@@ -147,7 +135,6 @@ export class CategoriesPage implements OnInit, OnDestroy {
       cssClass: 'custom-alert color-picker-alert',
       inputs: this.colors.map((color) => ({
         type: 'radio' as const,
-        // Mostramos un bloque de color en el label usando unicode
         label: color,
         value: color,
         checked: category.color === color,

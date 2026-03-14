@@ -5,7 +5,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-
 import {
   AlertController,
   ToastController,
@@ -47,6 +46,10 @@ export class HomePage implements OnInit, OnDestroy {
     private navCtrl: NavController,
   ) {}
 
+  goToCategories() {
+    this.navCtrl.navigateForward('/categories');
+  }
+
   async ngOnInit() {
     await this.remoteConfigService.initialize();
     this.showCategoryFilter = this.remoteConfigService.getBoolean(
@@ -68,20 +71,10 @@ export class HomePage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // ionViewWillEnter se dispara cada vez que Ionic muestra esta página,
-  // incluso al volver desde categorías. Con OnPush, markForCheck() es
-  // necesario para que Angular re-evalúe el template en ese momento.
   ionViewWillEnter() {
     this.cdr.markForCheck();
   }
 
-  // NavController.navigateForward activa las animaciones de Ionic.
-  // Router.navigate() solo cambia la URL sin disparar ion-router-outlet.
-  goToCategories() {
-    this.navCtrl.navigateForward('/categories');
-  }
-
-  // ── Filtrado ─────────────────────────────────────────────────
   selectCategory(categoryId: string | null) {
     this.selectedCategoryId = categoryId;
     this.applyFilter();
@@ -106,7 +99,6 @@ export class HomePage implements OnInit, OnDestroy {
     return this.tasks.filter((t) => !t.completed).length;
   }
 
-  // ── Agregar tarea ─────────────────────────────────────────────
   async openAddTaskAlert() {
     const alert = await this.alertCtrl.create({
       header: 'Nueva Tarea',
@@ -165,7 +157,6 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  // ── Editar tarea ──────────────────────────────────────────────
   async editTask(task: Task, slidingItem?: IonItemSliding) {
     await slidingItem?.close();
     const alert = await this.alertCtrl.create({
@@ -191,7 +182,6 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  // ── Toggle / Delete ───────────────────────────────────────────
   toggleTask(task: Task) {
     this.taskService.toggleComplete(task.id);
   }

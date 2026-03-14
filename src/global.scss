@@ -1,8 +1,11 @@
 @import "theme/variables";
 
 /* El primer toolbar del header recibe el padding del notch */
-ion-header ion-toolbar:first-child {
-  padding-top: env(safe-area-inset-top) !important;
+// ion-header ion-toolbar:first-child {
+//   padding-top: env(safe-area-inset-top) !important;
+// }
+ion-header {
+  padding-top: env(safe-area-inset-top);
 }
 
 /* El contenido deja espacio abajo para el home indicator + FAB */
@@ -13,13 +16,11 @@ ion-content {
 }
 
 /* El FAB sube sobre el home indicator */
-ion-fab[vertical="bottom"] {
-  bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+ion-fab[vertical="bottom"][horizontal="end"] {
+  bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
-/* ════════════════════════════════════════════
-   HEADER / TOOLBAR
-   ════════════════════════════════════════════ */
+/* HEADER / TOOLBAR */
 ion-header {
   &::after {
     display: none;
@@ -33,9 +34,7 @@ ion-header {
   }
 }
 
-/* ════════════════════════════════════════════
-   FAB BUTTON — efecto glow
-   ════════════════════════════════════════════ */
+/* FAB BUTTON — efecto glow*/
 ion-fab-button {
   --background: var(--ion-color-primary);
   --background-hover: var(--ion-color-primary-tint);
@@ -58,9 +57,7 @@ ion-fab-button {
   }
 }
 
-/* ════════════════════════════════════════════
-   LISTAS Y ITEMS
-   ════════════════════════════════════════════ */
+/* LISTAS Y ITEMS*/
 ion-list {
   background: transparent !important;
   padding: 0 !important;
@@ -79,9 +76,7 @@ ion-item-sliding {
   background: transparent;
 }
 
-/* ════════════════════════════════════════════
-   CHECKBOXES
-   ════════════════════════════════════════════ */
+/* CHECKBOXES*/
 ion-checkbox {
   --border-radius: 8px;
   --border-width: 2px;
@@ -92,17 +87,13 @@ ion-checkbox {
   --size: 22px;
 }
 
-/* ════════════════════════════════════════════
-   BACK BUTTON
-   ════════════════════════════════════════════ */
+/* BACK BUTTON */
 ion-back-button {
   --color: var(--app-text);
   --icon-font-size: 22px;
 }
 
-/* ════════════════════════════════════════════
-   SCROLL
-   ════════════════════════════════════════════ */
+/* SCROLL */
 ion-content::part(scroll) {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;

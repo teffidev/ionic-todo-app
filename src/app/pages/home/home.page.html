@@ -1,144 +1,147 @@
-<ion-header class="ion-no-border app-header">
-  <ion-toolbar>
-    <ion-title slot="start" class="header-title-wrap">
-      <span class="header-title">Mis Tareas</span>
-      <span class="header-badge" *ngIf="pendingCount > 0"
-        >{{ pendingCount }}</span
-      >
-    </ion-title>
+<ion-page>
+  <ion-header class="ion-no-border app-header">
+    <ion-toolbar>
+      <ion-title slot="start" class="header-title-wrap">
+        <span class="header-title">Mis Tareas</span>
+        <span class="header-badge" *ngIf="pendingCount > 0"
+          >{{ pendingCount }}</span
+        >
+      </ion-title>
 
-    <!-- ✅ FIX: (click) con goToCategories() en lugar de routerLink -->
-    <!-- Icono cambiado a 'folder-outline' — más intuitivo que pricetags -->
-    <ion-buttons slot="end">
+      <!-- Navegación a categorías con routerLink -->
+      <ion-buttons slot="end">
+        <ion-button
+          class="nav-icon-btn"
+          (click)="goToCategories()"
+          routerDirection="forward"
+        >
+          <ion-icon name="folder-open-outline" slot="top"></ion-icon>
+          <span class="nav-icon-label">Categorías</span>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <!-- FILTROS — controlado por Feature Flag Firebase -->
+    <div class="filter-bar" *ngIf="showCategoryFilter && categories.length > 0">
       <button
-        class="nav-icon-btn"
-        (click)="goToCategories()"
-        title="Categorías"
+        class="filter-chip"
+        [class.active]="selectedCategoryId === null"
+        (click)="selectCategory(null)"
       >
-        <ion-icon name="folder-open-outline"></ion-icon>
-        <span class="nav-icon-label">Categorías</span>
+        Todas
       </button>
-    </ion-buttons>
-  </ion-toolbar>
-
-  <!-- FILTROS — controlado por Feature Flag Firebase -->
-  <div class="filter-bar" *ngIf="showCategoryFilter && categories.length > 0">
-    <button
-      class="filter-chip"
-      [class.active]="selectedCategoryId === null"
-      (click)="selectCategory(null)"
-    >
-      Todas
-    </button>
-    <button
-      *ngFor="let cat of categories; trackBy: trackById"
-      class="filter-chip"
-      [class.active]="selectedCategoryId === cat.id"
-      (click)="selectCategory(cat.id)"
-      [style.--cat-color]="cat.color"
-    >
-      <span class="chip-dot" [style.background]="cat.color"></span>
-      {{ cat.name }}
-    </button>
-  </div>
-</ion-header>
-
-<ion-content>
-  <!-- STATS HERO -->
-  <div class="stats-hero" *ngIf="tasks.length > 0">
-    <div class="stat-card">
-      <span class="stat-number">{{ pendingCount }}</span>
-      <span class="stat-label">Pendientes</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-card">
-      <span class="stat-number accent">{{ tasks.length - pendingCount }}</span>
-      <span class="stat-label">Completadas</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-card">
-      <span class="stat-number">{{ tasks.length }}</span>
-      <span class="stat-label">Total</span>
-    </div>
-  </div>
-
-  <!-- ESTADO VACÍO -->
-  <div class="empty-state" *ngIf="filteredTasks.length === 0">
-    <div class="empty-icon-wrap">
-      <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-    </div>
-    <h2>{{ selectedCategoryId ? 'Sin tareas aquí' : '¡Todo al día!' }}</h2>
-    <p>
-      {{ selectedCategoryId ? 'No hay tareas en esta categoría' : 'Toca el botón
-      + para empezar' }}
-    </p>
-  </div>
-
-  <!-- LISTA DE TAREAS -->
-  <div class="tasks-container">
-    <ion-item-sliding
-      *ngFor="let task of filteredTasks; trackBy: trackById"
-      #slidingItem
-      class="task-slide"
-    >
-      <ion-item
-        class="task-card"
-        detail="false"
-        [class.is-done]="task.completed"
+      <button
+        *ngFor="let cat of categories; trackBy: trackById"
+        class="filter-chip"
+        [class.active]="selectedCategoryId === cat.id"
+        (click)="selectCategory(cat.id)"
+        [style.--cat-color]="cat.color"
       >
-        <div
-          class="task-accent-bar"
-          [style.background]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
-        ></div>
+        <span class="chip-dot" [style.background]="cat.color"></span>
+        {{ cat.name }}
+      </button>
+    </div>
+  </ion-header>
 
-        <ion-checkbox
-          slot="start"
-          class="task-check"
-          [checked]="task.completed"
-          (ionChange)="toggleTask(task)"
-          [style.--checkbox-background-checked]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
-          [style.--border-color-checked]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
+  <ion-content>
+    <!-- STATS HERO -->
+    <div class="stats-hero" *ngIf="tasks.length > 0">
+      <div class="stat-card">
+        <span class="stat-number">{{ pendingCount }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-card">
+        <span class="stat-number accent"
+          >{{ tasks.length - pendingCount }}</span
         >
-        </ion-checkbox>
+        <span class="stat-label">Completadas</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-card">
+        <span class="stat-number">{{ tasks.length }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+    </div>
 
-        <ion-label class="task-body">
-          <p class="task-title" [class.done-text]="task.completed">
-            {{ task.title }}
-          </p>
-          <span
-            class="cat-tag"
-            *ngIf="getCategoryForTask(task) as cat"
-            [style.--tag-color]="cat.color"
+    <!-- ESTADO VACÍO -->
+    <div class="empty-state" *ngIf="filteredTasks.length === 0">
+      <div class="empty-icon-wrap">
+        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+      </div>
+      <h2>{{ selectedCategoryId ? 'Sin tareas aquí' : '¡Todo al día!' }}</h2>
+      <p>
+        {{ selectedCategoryId ? 'No hay tareas en esta categoría' : 'Toca el
+        botón + para empezar' }}
+      </p>
+    </div>
+
+    <!-- LISTA DE TAREAS -->
+    <div class="tasks-container">
+      <ion-item-sliding
+        *ngFor="let task of filteredTasks; trackBy: trackById"
+        #slidingItem
+        class="task-slide"
+      >
+        <ion-item
+          class="task-card"
+          detail="false"
+          [class.is-done]="task.completed"
+        >
+          <div
+            class="task-accent-bar"
+            [style.background]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
+          ></div>
+
+          <ion-checkbox
+            slot="start"
+            class="task-check"
+            [checked]="task.completed"
+            (ionChange)="toggleTask(task)"
+            [style.--checkbox-background-checked]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
+            [style.--border-color-checked]="getCategoryForTask(task)?.color || 'var(--ion-color-primary)'"
           >
-            {{ cat.name }}
-          </span>
-        </ion-label>
+          </ion-checkbox>
 
-        <button
-          slot="end"
-          class="edit-btn"
-          (click)="editTask(task, slidingItem)"
-        >
-          <ion-icon name="pencil-outline"></ion-icon>
-        </button>
-      </ion-item>
+          <ion-label class="task-body">
+            <p class="task-title" [class.done-text]="task.completed">
+              {{ task.title }}
+            </p>
+            <span
+              class="cat-tag"
+              *ngIf="getCategoryForTask(task) as cat"
+              [style.--tag-color]="cat.color"
+            >
+              {{ cat.name }}
+            </span>
+          </ion-label>
 
-      <ion-item-options side="end">
-        <ion-item-option
-          class="delete-option"
-          (click)="deleteTask(task, slidingItem)"
-          expandable
-        >
-          <ion-icon name="trash-outline" slot="top"></ion-icon>
-          <span>Eliminar</span>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </div>
-</ion-content>
+          <button
+            slot="end"
+            class="edit-btn"
+            (click)="editTask(task, slidingItem)"
+          >
+            <ion-icon name="pencil-outline"></ion-icon>
+          </button>
+        </ion-item>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="openAddTaskAlert()">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+        <ion-item-options side="end">
+          <ion-item-option
+            class="delete-option"
+            (click)="deleteTask(task, slidingItem)"
+            expandable
+          >
+            <ion-icon name="trash-outline" slot="top"></ion-icon>
+            <span>Eliminar</span>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </div>
+  </ion-content>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openAddTaskAlert()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-page>

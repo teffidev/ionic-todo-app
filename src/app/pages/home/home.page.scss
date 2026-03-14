@@ -346,30 +346,24 @@
   }
 }
 
-/* ── BOTÓN DE NAVEGACIÓN A CATEGORÍAS ── */
 .nav-icon-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  background: var(--app-surface);
-  border: 1px solid var(--app-border);
-  border-radius: 12px;
-  color: var(--app-text-muted);
-  padding: 6px 10px;
+  --color: var(--app-text-muted);
+  --background: var(--app-surface);
+  --background-hover: var(--app-card);
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  height: auto;
   margin-right: 8px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  font-family: "Outfit", sans-serif;
+  border: 1px solid var(--app-border);
 
   ion-icon {
     font-size: 18px;
     color: var(--ion-color-primary);
-  }
-
-  &:active {
-    transform: scale(0.94);
-    background: var(--app-card);
+    display: block;
+    margin-bottom: 2px;
   }
 }
 

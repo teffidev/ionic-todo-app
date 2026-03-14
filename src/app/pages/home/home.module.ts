@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common'; // *ngIf, *ngFor, etc.
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import { HomePage } from './home.page';
     IonicModule,
     RouterModule.forChild([{ path: '', component: HomePage }]), // Ruta hija
   ],
-  declarations: [HomePage], // Declarar el componente en este módulo
+  declarations: [HomePage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomePageModule {}
