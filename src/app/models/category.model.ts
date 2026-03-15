@@ -1,17 +1,21 @@
 export interface Category {
   id: string;
   name: string;
-  color: string; // Color hex para identificar visualmente la categoría
+  color: string;
 }
 
-// Colores predeterminados para elegir al crear categoría
-export const CATEGORY_COLORS = [
-  '#6366f1', // Índigo
-  '#f59e0b', // Ámbar
-  '#10b981', // Esmeralda
-  '#ef4444', // Rojo
-  '#3b82f6', // Azul
-  '#8b5cf6', // Violeta
-  '#ec4899', // Rosa
-  '#14b8a6', // Teal
+export interface CategoryColor {
+  name: string;
+  value: string;
+}
+
+export const CATEGORY_COLORS: CategoryColor[] = [
+  { name: 'Índigo', value: '#6366f1' },
+  { name: 'Ámbar', value: '#f59e0b' },
+  { name: 'Esmeralda', value: '#10b981' },
+  { name: 'Rojo', value: '#ef4444' },
+  { name: 'Azul', value: '#3b82f6' },
+  { name: 'Violeta', value: '#8b5cf6' },
+  { name: 'Rosa', value: '#ec4899' },
+  { name: 'Teal', value: '#14b8a6' },
 ];

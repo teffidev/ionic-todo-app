@@ -327,6 +327,18 @@
   }
 }
 
+/* Botón eliminar */
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--ion-color-danger);
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  ion-icon { font-size: 18px; }
+}
+
 /* Opción de eliminar al hacer swipe */
 .delete-option {
   --background: #f43f5e;

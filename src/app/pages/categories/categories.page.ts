@@ -78,7 +78,7 @@ export class CategoriesPage implements OnInit, OnDestroy {
             }
             const color =
               existing?.color ||
-              this.colors[Math.floor(Math.random() * this.colors.length)];
+              this.colors[Math.floor(Math.random() * this.colors.length)].value;
             if (isEdit && existing) {
               this.categoryService.updateCategory(existing.id, {
                 name: data.name.trim(),
@@ -123,9 +123,9 @@ export class CategoriesPage implements OnInit, OnDestroy {
       cssClass: 'custom-alert color-picker-alert',
       inputs: this.colors.map((color) => ({
         type: 'radio' as const,
-        label: color,
-        value: color,
-        checked: category.color === color,
+        label: color.name,
+        value: color.value,
+        checked: category.color === color.value,
       })),
       buttons: [
         { text: 'Cancelar', role: 'cancel', cssClass: 'alert-btn-cancel' },
