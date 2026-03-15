@@ -1,13 +1,13 @@
 export const environment = {
   production: false,
-  
+
   firebaseConfig: {
-    apiKey: "AIzaSyCFwzz_MuIuAbxIJgZCKi0U3WfAmqmL3UU",
-    authDomain: "ionic-todo-app-1ac5d.firebaseapp.com",
-    projectId: "ionic-todo-app-1ac5d",
-    storageBucket: "ionic-todo-app-1ac5d.firebasestorage.app",
-    messagingSenderId: "163530233116",
-    appId: "1:163530233116:web:4f687128dbc33c179496d9",
-    measurementId: "G-SRRF2FFGJM"
-  }
+    apiKey: 'AIzaSyDGpP2eXGqo36oIE-j0uw-mtmky1yT2CX0',
+    authDomain: 'todo-app-5a27a.firebaseapp.com',
+    projectId: 'todo-app-5a27a',
+    storageBucket: 'todo-app-5a27a.firebasestorage.app',
+    messagingSenderId: '314808015306',
+    appId: '1:314808015306:web:0108f42126d1c03797d733',
+    measurementId: 'G-VNFWE6P97J',
+  },
 };
