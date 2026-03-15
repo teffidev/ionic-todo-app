@@ -26,7 +26,7 @@ Aplicación híbrida (Android/iOS/Web) que permite gestionar tareas con soporte 
 - Crear, editar y eliminar categorías con colores personalizados
 - Asignar una categoría a cada tarea
 - Filtrar tareas por categoría
-- Feature flag vía Firebase Remote Config para activar/desactivar el filtro de categorías
+- Feature flag via Firebase Remote Config para activar/desactivar el filtro de categorías
 - Persistencia local con `localStorage`
 - Soporte para modo claro y oscuro
 
@@ -34,14 +34,14 @@ Aplicación híbrida (Android/iOS/Web) que permite gestionar tareas con soporte 
 
 ## Tecnologías utilizadas
 
-| Tecnología | Versión |
-|---|---|
-| Ionic | 8.x |
-| Angular | 20.x |
-| Capacitor | 8.x |
-| Angular Fire | 20.x |
-| TypeScript | 5.9.x |
-| Firebase Remote Config | — |
+| Tecnología             | Versión |
+| ---------------------- | ------- |
+| Ionic                  | 8.x     |
+| Angular                | 20.x    |
+| Capacitor              | 8.x     |
+| Angular Fire           | 20.x    |
+| TypeScript             | 5.9.x   |
+| Firebase Remote Config | —       |
 
 ---
 
@@ -55,6 +55,7 @@ Antes de comenzar, asegúrate de tener instalado:
 - **Ionic CLI**: `npm install -g @ionic/cli`
 
 > ⚠️ **Importante:** Capacitor 8 requiere exactamente **JDK 21**. Si tienes una versión diferente instalada, configura `JAVA_HOME` apuntando al JDK 21 y agrega esta línea en `android/gradle.properties`:
+>
 > ```properties
 > org.gradle.java.home=C:\\Program Files\\Eclipse Adoptium\\jdk-21.x.x.x-hotspot
 > ```
@@ -123,7 +124,7 @@ npx cap open ios
 
 En Xcode: selecciona el target, conecta un dispositivo o simulador y ejecuta. Para generar el IPA: **Product → Archive**.
 
-> ⚠️ La compilación de iOS requiere macOS y Xcode instalados.
+> ⚠️ La compilación de iOS requiere macOS y Xcode instalado.
 
 ---
 
@@ -174,9 +175,9 @@ La aplicación usa **Firebase Remote Config** para controlar funcionalidades en 
 
 ### Feature flag implementado
 
-| Parámetro | Tipo | Valor por defecto | Efecto |
-|---|---|---|---|
-| `show_category_filter` | `boolean` | `true` | Muestra u oculta la barra de filtros por categoría en la pantalla principal |
+| Parámetro              | Tipo      | Valor por defecto | Efecto                                                                      |
+| ---------------------- | --------- | ----------------- | --------------------------------------------------------------------------- |
+| `show_category_filter` | `boolean` | `true`            | Muestra u oculta la barra de filtros por categoría en la pantalla principal |
 
 ### Cómo probar el feature flag
 
@@ -200,8 +201,8 @@ export const environment = {
     projectId: "TU_PROYECTO",
     storageBucket: "TU_PROYECTO.appspot.com",
     messagingSenderId: "TU_SENDER_ID",
-    appId: "TU_APP_ID"
-  }
+    appId: "TU_APP_ID",
+  },
 };
 ```
 
@@ -231,11 +232,11 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 Registra manualmente los Web Components de Ionic con el browser:
 
 ```typescript
-import { defineCustomElements } from '@ionic/core/loader';
+import { defineCustomElements } from "@ionic/core/loader";
 defineCustomElements(window);
 ```
 
-**3. Clase `ion-page` vía `host` en el componente**
+**3. Clase `ion-page` via `host` en el componente**
 
 En lugar de envolver el template en `<ion-page>`, se aplica la clase directamente al host del componente para que Ionic gestione correctamente el stack de navegación:
 
@@ -266,4 +267,4 @@ Ionic no inyecta automáticamente los estilos de posicionamiento para `ion-page`
 
 ---
 
-*Desarrollado por [Estefanía](https://github.com/teffidev)*
+_Desarrollado por [Estefanía](https://github.com/teffidev)_
