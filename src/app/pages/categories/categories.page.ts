@@ -83,10 +83,10 @@ export class CategoriesPage implements OnInit, OnDestroy {
               this.categoryService.updateCategory(existing.id, {
                 name: data.name.trim(),
               });
-              this.showToast('Categoría actualizada');
+              this.showToast('Categoría actualizada', 'primary');
             } else {
               this.categoryService.addCategory(data.name.trim(), color);
-              this.showToast('Categoría creada');
+              this.showToast('Categoría creada', 'success');
             }
             return true;
           },
@@ -109,7 +109,7 @@ export class CategoriesPage implements OnInit, OnDestroy {
           handler: () => {
             this.taskService.removeCategory(category.id);
             this.categoryService.deleteCategory(category.id);
-            this.showToast('Categoría eliminada');
+            this.showToast('Categoría eliminada', 'danger');
           },
         },
       ],
@@ -135,7 +135,7 @@ export class CategoriesPage implements OnInit, OnDestroy {
           handler: (color: string) => {
             if (color) {
               this.categoryService.updateCategory(category.id, { color });
-              this.showToast('Color actualizado');
+              this.showToast('Color actualizado', 'primary');
             }
           },
         },
@@ -147,10 +147,11 @@ export class CategoriesPage implements OnInit, OnDestroy {
   private async showToast(message: string, color = 'dark') {
     const toast = await this.toastCtrl.create({
       message,
-      duration: 1800,
-      position: 'bottom',
+      duration: 2200,
+      position: 'top',
       color,
       cssClass: 'app-toast',
+      icon: 'checkmark-circle-outline',
     });
     await toast.present();
   }

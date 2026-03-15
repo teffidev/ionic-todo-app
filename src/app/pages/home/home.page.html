@@ -1,16 +1,16 @@
 <!-- HEADER -->
 <ion-header class="ion-no-border app-header">
   <ion-toolbar>
-    <ion-title class="header-title-wrap">
+    <ion-title class="header-title-wrap" slot="start">
       <span class="header-title">Mis Tareas</span>
       <span class="header-badge" *ngIf="pendingCount > 0">
         {{ pendingCount }}
       </span>
     </ion-title>
 
-    <ion-buttons slot="start">
+    <ion-buttons slot="end">
       <ion-button class="nav-icon-btn" (click)="goToCategories()">
-        <ion-icon name="folder-open-outline" slot="top"></ion-icon>
+        <ion-icon name="folder-open-outline"></ion-icon>
         <span class="nav-icon-label">Categorías</span>
       </ion-button>
     </ion-buttons>
@@ -137,15 +137,6 @@
           (click)="editTask(task, slidingItem)"
         >
           <ion-icon name="pencil-outline"></ion-icon>
-        </button>
-
-        <!-- DELETE -->
-        <button
-          slot="end"
-          class="delete-btn"
-          (click)="deleteTask(task, slidingItem)"
-        >
-          <ion-icon name="trash-outline"></ion-icon>
         </button>
       </ion-item>
 

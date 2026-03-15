@@ -254,14 +254,31 @@ ion-alert.custom-alert {
 
 /* TOAST */
 .app-toast {
-  --background: #1e293b;
-  --color: #e2e8f0;
+  --background: transparent;
+  --color: #ffffff;
   --border-radius: 14px;
-  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   font-family: "Outfit", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: calc(80px + env(safe-area-inset-bottom));
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: calc(16px + env(safe-area-inset-top));
+
+  &::part(container) {
+    background: #6366f1;
+    border-radius: 14px;
+    padding: 14px 20px;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.5);
+  }
+
+  &::part(message) {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  &::part(icon) {
+    color: #ffffff;
+    font-size: 20px;
+  }
 }
 
 @media (prefers-color-scheme: light) {

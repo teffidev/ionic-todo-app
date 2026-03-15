@@ -136,7 +136,7 @@ export class HomePage implements OnInit, OnDestroy {
           cssClass: 'alert-btn-confirm',
           handler: (categoryId: string) => {
             this.taskService.addTask(title, categoryId || null);
-            this.showToast('Tarea agregada');
+            this.showToast('Tarea agregada', 'primary');
           },
         },
       ],
@@ -160,7 +160,7 @@ export class HomePage implements OnInit, OnDestroy {
               this.taskService.updateTask(task.id, {
                 title: data.title.trim(),
               });
-              this.showToast('Tarea actualizada');
+              this.showToast('Tarea actualizada', 'primary');
             }
           },
         },
@@ -176,16 +176,17 @@ export class HomePage implements OnInit, OnDestroy {
   async deleteTask(task: Task, slidingItem?: IonItemSliding) {
     await slidingItem?.close();
     this.taskService.deleteTask(task.id);
-    this.showToast('Tarea eliminada');
+    this.showToast('Tarea eliminada', 'danger');
   }
 
   private async showToast(message: string, color = 'dark') {
     const toast = await this.toastCtrl.create({
       message,
-      duration: 1800,
-      position: 'bottom',
+      duration: 2200,
+      position: 'top',
       color,
       cssClass: 'app-toast',
+      icon: 'checkmark-circle-outline',
     });
     await toast.present();
   }
