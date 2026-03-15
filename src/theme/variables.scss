@@ -1,7 +1,3 @@
-/* ════════════════════════════════════════════
-   DESIGN SYSTEM — Dark Luxury Todo App
-   ════════════════════════════════════════════ */
-
 :root {
   /* Color primario */
   --ion-color-primary: #6366f1;
@@ -66,15 +62,6 @@
     --ion-border-color: var(--app-border);
   }
 }
-
-/* ════════════════════════════════════════════
-   ALERT — Fix fondo blanco en modo oscuro
-   
-   El problema: Ionic renderiza el Alert dentro de
-   un Shadow DOM que ignora las CSS variables del :root.
-   Solución: apuntar directamente al host del alert
-   con el selector de la clase CSS que le pasamos.
-   ════════════════════════════════════════════ */
 
 /* Backdrop oscuro */
 ion-alert.custom-alert {
@@ -265,9 +252,7 @@ ion-alert.custom-alert {
   }
 }
 
-/* ════════════════════════════════════════════
-   TOAST
-   ════════════════════════════════════════════ */
+/* TOAST */
 .app-toast {
   --background: #1e293b;
   --color: #e2e8f0;

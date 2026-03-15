@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +11,7 @@ import { Category, CATEGORY_COLORS } from '../../models/category.model';
   selector: 'app-categories',
   templateUrl: './categories.page.html',
   styleUrls: ['./categories.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'ion-page' },
   standalone: false,
 })
 export class CategoriesPage implements OnInit, OnDestroy {
@@ -31,7 +25,6 @@ export class CategoriesPage implements OnInit, OnDestroy {
     private taskService: TaskService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -39,17 +32,12 @@ export class CategoriesPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((cats) => {
         this.categories = cats;
-        this.cdr.markForCheck();
       });
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  ionViewWillEnter() {
-    this.cdr.markForCheck();
   }
 
   trackByCategoryId(_i: number, cat: Category): string {

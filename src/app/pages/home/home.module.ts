@@ -8,7 +8,7 @@ import { HomePage } from './home.page';
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: HomePage }]), // Ruta hija
+    RouterModule.forChild([{ path: '', component: HomePage }]),
   ],
   declarations: [HomePage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

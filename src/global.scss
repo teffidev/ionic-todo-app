@@ -1,9 +1,5 @@
 @import "theme/variables";
 
-/* El primer toolbar del header recibe el padding del notch */
-// ion-header ion-toolbar:first-child {
-//   padding-top: env(safe-area-inset-top) !important;
-// }
 ion-header {
   padding-top: env(safe-area-inset-top);
 }
@@ -100,4 +96,18 @@ ion-content::part(scroll) {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+// Fix compatibilidad Angular 20 + Ionic 8
+.ion-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--ion-background-color);
+  contain: layout size style;
+}
+
+.ion-page-hidden {
+  display: none !important;
 }

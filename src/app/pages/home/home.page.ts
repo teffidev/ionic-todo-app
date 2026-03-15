@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   AlertController,
   ToastController,
@@ -24,7 +18,7 @@ import { Category } from '../../models/category.model';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'ion-page' },
   standalone: false,
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -42,7 +36,6 @@ export class HomePage implements OnInit, OnDestroy {
     private remoteConfigService: RemoteConfigService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private cdr: ChangeDetectorRef,
     private navCtrl: NavController,
   ) {}
 
@@ -62,7 +55,6 @@ export class HomePage implements OnInit, OnDestroy {
         this.tasks = tasks;
         this.categories = categories;
         this.applyFilter();
-        this.cdr.markForCheck();
       });
   }
 
@@ -71,14 +63,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  ionViewWillEnter() {
-    this.cdr.markForCheck();
-  }
-
   selectCategory(categoryId: string | null) {
     this.selectedCategoryId = categoryId;
     this.applyFilter();
-    this.cdr.markForCheck();
   }
 
   private applyFilter() {
