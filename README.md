@@ -16,7 +16,6 @@ Aplicación de lista de tareas construida con **Ionic 7 + Angular 17 + Firebase 
 8. [Probar el APK en emulador](#-probar-el-apk-en-emulador)
 9. [Arquitectura del proyecto](#-arquitectura-del-proyecto)
 10. [Optimizaciones de rendimiento](#-optimizaciones-de-rendimiento)
-11. [Preguntas técnicas de la prueba](#-preguntas-técnicas-de-la-prueba)
 
 ---
 
@@ -304,32 +303,6 @@ src/
 | **Cleanup de suscripciones** | `takeUntil(destroy$)` + `ngOnDestroy` | Cancela automáticamente todas las suscripciones al salir de la página |
 | **Estado en RAM** | `BehaviorSubject` | Lee localStorage una sola vez al iniciar; el resto opera en memoria |
 
----
-
-## ❓ Preguntas técnicas de la prueba
-
-### ¿Cuáles fueron los principales desafíos?
-
-**Sistema de módulos de Angular:** A diferencia de React donde todo vive en un `.tsx`, Angular separa obligatoriamente lógica, template y estilos en archivos distintos, y cada página requiere su propio módulo. Tiene más estructura inicial pero mejora la mantenibilidad en equipos grandes.
-
-**RxJS y el paradigma reactivo:** Angular usa Observables donde React usaría `useState` + `useEffect`. El desafío principal fue entender `BehaviorSubject` como equivalente a un store global y el patrón `takeUntil(destroy$)` para prevenir memory leaks.
-
-**Compatibilidad de versiones AngularFire:** En `@angular/fire` v17, `provideFirebaseApp()` y `provideRemoteConfig()` retornan `EnvironmentProviders` y deben ir en `providers[]`, no en `imports[]` del NgModule. Un cambio silencioso de API que genera errores de tipado difíciles de depurar sin conocer el contexto.
-
-### ¿Qué técnicas de optimización aplicaste y por qué?
-
-- **`OnPush` + `trackBy`**: El combo más impactante en listas. Sin `trackBy`, agregar una tarea a una lista de 500 destruye y recrea 500 nodos DOM. Con `trackBy` solo crea el nodo nuevo. `OnPush` elimina re-renders por eventos no relacionados.
-- **Lazy Loading**: Reduce el tiempo de carga inicial significativamente. Crítico en dispositivos de gama baja o conexiones lentas.
-- **`takeUntil(destroy$)`**: Previene memory leaks que son silenciosos pero acumulativos. En apps de larga sesión, una suscripción viva por página puede degradar el rendimiento progresivamente.
-
-### ¿Cómo aseguraste la calidad y mantenibilidad?
-
-- **Tipado estricto con TypeScript**: Las interfaces `Task` y `Category` garantizan consistencia en toda la app y el compilador atrapa errores antes de runtime.
-- **Separación de responsabilidades**: Servicios manejan datos; componentes manejan presentación. Cambiar el backend de `localStorage` a una API REST requiere modificar solo los servicios.
-- **Patrón uniforme**: Todos los componentes siguen la misma estructura: `OnPush` + `BehaviorSubject` + `takeUntil`. Predecible y fácil de mantener por cualquier desarrollador del equipo.
-- **Comentarios del "por qué"**: Cada decisión técnica no obvia está documentada explicando la razón, no solo lo que hace.
-
----
 
 ## 🛠️ Comandos de referencia rápida
 
